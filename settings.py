@@ -1,5 +1,6 @@
 import math
 
+
 # GAME SETTINGS
 RES = WIDTH, HEIGHT = 1600, 900
 HALF_WIDTH = WIDTH // 2
@@ -22,3 +23,4 @@ SCREEN_DIST = HALF_WIDTH / math.tan(HALF_FOV)
 SCALE = WIDTH // NUM_RAYS
 
 MOUSE_SENSITIVITY = 0.001  # Adjust this value to your liking
+DOOR_SPEED = 0.05  # Adjust this to your liking

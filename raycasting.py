@@ -50,6 +50,17 @@ class RayCasting:
                 y_vert += dy
                 depth_vert += delta_depth
 
+            for i in range(MAX_DEPTH):
+                tile_hor = int(x_hor), int(y_hor)
+                if tile_hor in self.game.map.world_map:
+                    if self.game.map.world_map[tile_hor] == 2:  # Door
+                        # Adjust how you draw the door in the ray-cast
+                        color = [150 / (1 + depth_hor ** 5 * 0.00002)] * 3
+                    break
+                x_hor += dx
+                y_hor += dy
+                depth_hor += delta_depth
+
             #DEPTH
             if depth_vert < depth_hor:
                 depth = depth_vert

@@ -1,6 +1,7 @@
 from settings import *
 import pygame as pg
 import math
+import sys
 
 
 class Player:
@@ -47,6 +48,14 @@ class Player:
 
         self.angle %= math.tau
 
+    def check_events(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+                pg.quit()
+                sys.exit()
+            elif event.type == pg.KEYDOWN and event.key == pg.K_e:
+                self.player.interact()
+
     def check_wall(self, x, y):
         return (x,y) not in self.game.map.world_map
 
@@ -61,6 +70,24 @@ class Player:
         #             (self.x * 100 + WIDTH * math.cos(self.angle),
         #              self.y * 100 + WIDTH * math.sin(self.angle)), 2)
         pg.draw.circle(self.game.screen, 'green', (self.x * 100, self.y * 100), 15)
+
+    def interact(self):
+        # Check the tile in front of the player
+        sin_a = math.sin(self.angle)
+        cos_a = math.cos(self.angle)
+
+        check_distance = 0.5  # Adjust based on your liking
+        x_check = self.x + check_distance * cos_a
+        y_check = self.y + check_distance * sin_a
+
+        tile_check = int(x_check), int(y_check)
+
+        if tile_check in self.game.map.world_map:
+            tile_value = self.game.map.world_map[tile_check]
+            if tile_value == 2:  # It's a door
+                self.game.map.toggle_door(tile_check)
+
+
 
 
     def update (self):
