@@ -22,5 +22,7 @@ MAX_DEPTH = 20
 SCREEN_DIST = HALF_WIDTH / math.tan(HALF_FOV)
 SCALE = WIDTH // NUM_RAYS
 
+TEXTURE_SIZE = 256
+HALF_TEXTURE_SIZE = TEXTURE_SIZE // 2
 MOUSE_SENSITIVITY = 0.001  # Adjust this value to your liking
 DOOR_SPEED = 0.05  # Adjust this to your liking

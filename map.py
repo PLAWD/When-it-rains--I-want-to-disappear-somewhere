@@ -1,17 +1,39 @@
 import pygame as pg
-from settings import *
 
 _ = False
 mini_map = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
-    [1, _, _, 1, 1, 1, 1, _, _, _, 1, 1, 1, _, _, _, _, _, _, 1],
-    [1, _, _, _, _, _, 1, _, _, _, _, _, 1, _, _, _, _, _, _, 1],
-    [1, _, _, _, _, _, 1, _, _, _, _, _, 1, _, _, _, _, _, _, 1],
-    [1, _, _, 1, 1, 1, 1, _, _, _, 2, _, _, _, _, _, _, _, _, 1],
-    [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
-    [1, _, _, 1, _, _, _, 1, _, _, _, _, _, _, _, 1, _, 1, _, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, 3, 3, 3, 3, _, _, _, 2, 2, 2, _, _, 1],
+    [1, _, _, _, _, _, 4, _, _, _, _, _, 2, _, _, 1],
+    [1, _, _, _, _, _, 4, _, _, _, _, _, 2, _, _, 1],
+    [1, _, _, 3, 3, 3, 3, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, _, 4, _, _, _, 4, _, _, _, _, _, _, 1],
+    [1, 1, 1, 3, 1, 3, 1, 1, 1, 3, _, _, 3, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 3, _, _, 3, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 3, _, _, 3, 1, 1, 1],
+    [1, 1, 3, 1, 1, 1, 1, 1, 1, 3, _, _, 3, 1, 1, 1],
+    [1, 4, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [3, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, 2, _, _, _, _, _, 3, 4, _, 4, 3, _, 1],
+    [1, _, _, 5, _, _, _, _, _, _, 3, _, 3, _, _, 1],
+    [1, _, _, 2, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [3, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [1, 4, _, _, _, _, _, _, 4, _, _, 4, _, _, _, 1],
+    [1, 1, 3, 3, _, _, 3, 3, 1, 3, 3, 1, 3, 1, 1, 1],
+    [1, 1, 1, 3, _, _, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 3, 3, 4, _, _, 4, 3, 3, 3, 3, 3, 3, 3, 3, 1],
+    [3, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 3],
+    [3, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 3],
+    [3, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 3],
+    [3, _, _, 5, _, _, _, 5, _, _, _, 5, _, _, _, 3],
+    [3, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 3],
+    [3, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 3],
+    [3, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
 ]
 
 
@@ -20,8 +42,9 @@ class Map:
         self.game = game
         self.mini_map = mini_map
         self.world_map = {}
+        self.rows = len(self.mini_map)
+        self.cols = len(self.mini_map[0])
         self.get_map()
-        self.doors = {}  # {position: (state, timer)}
 
     def get_map(self):
         for j, row in enumerate(self.mini_map):
@@ -30,33 +53,5 @@ class Map:
                     self.world_map[(i, j)] = value
 
     def draw(self):
-        for pos, value in self.world_map.items():
-            if value == 2:  # if it's a door
-                pg.draw.rect(self.game.screen, 'blue', (pos[0] * 100, pos[1] * 100, 100, 100), 2)
-            else:
-                pg.draw.rect(self.game.screen, 'darkgray', (pos[0] * 100, pos[1] * 100, 100, 100), 2)
-
-    def toggle_door(self, pos):
-        if pos not in self.doors:
-            self.doors[pos] = ("opening", 0)
-        else:
-            state, _ = self.doors[pos]
-            self.doors[pos] = ("closing" if state == "opening" else "opening", 0)
-
-    def update_doors(self):
-        to_remove = []
-        for pos, (state, timer) in self.doors.items():
-            if state == "opening":
-                timer += DOOR_SPEED
-                if timer >= 1:
-                    self.mini_map[pos[1]][pos[0]] = _  # open the door
-                    to_remove.append(pos)
-            elif state == "closing":
-                timer -= DOOR_SPEED
-                if timer <= 0:
-                    self.mini_map[pos[1]][pos[0]] = 2  # close the door
-                    to_remove.append(pos)
-            self.doors[pos] = (state, timer)
-
-        for pos in to_remove:
-            del self.doors[pos]
+        [pg.draw.rect(self.game.screen, 'darkgray', (pos[0] * 100, pos[1] * 100, 100, 100), 2)
+         for pos in self.world_map]
