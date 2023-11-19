@@ -9,10 +9,24 @@ class Player:
         self.game = game
         self.x, self.y = PLAYER_POS
         self.angle = PLAYER_ANGLE
+        self.sprint_speed = PLAYER_SPEED * 2  # Sprint speed is twice the normal speed
+        self.is_sprinting = False
+        self.stamina = 1000  # Maximum stamina
+        self.stamina_depletion_rate = 1  # Stamina depletion rate per frame
+        self.stamina_recovery_rate = 0.5  # Stamina recovery rate per frame
+
         pg.mouse.set_visible(False)  # Hide the mouse cursor
         pg.event.set_grab(True)  # Keep the mouse inside the game window
 
+
     def movement(self):
+        self.is_moving = False #Reset movement status
+
+        speed = self.sprint_speed if self.is_sprinting else PLAYER_SPEED
+        speed *= self.game.delta_time
+        dx = speed * math.cos(self.angle)
+        dy = speed * math.sin(self.angle)
+
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
         dx, dy = 0, 0
@@ -21,6 +35,16 @@ class Player:
         speed_cos = speed * cos_a
 
         keys = pg.key.get_pressed()
+        self.is_sprinting = (keys[pg.K_LSHIFT] or keys[pg.K_RSHIFT])
+        if self.is_sprinting:
+            speed = self.sprint_speed if self.is_sprinting else PLAYER_SPEED
+            speed *= self.game.delta_time
+            dx = speed * math.cos(self.angle)
+            dy = speed * math.sin(self.angle)
+
+        if keys[pg.K_w] or keys[pg.K_s] or keys[pg.K_a] or keys[pg.K_d]:
+            self.is_moving = True  # Set to True if any movement key is pressed
+
         if keys[pg.K_w]:
             dx += speed_cos
             dy += speed_sin
@@ -37,6 +61,13 @@ class Player:
         #self.x += dx
         #self.y += dy
         self.check_wall_collision(dx, dy)
+
+        if self.is_sprinting:
+            self.stamina -= self.stamina_depletion_rate
+            if self.stamina < 0:
+                self.stamina = 0
+        elif not self.is_sprinting and self.stamina < 100:
+            self.stamina += self.stamina_recovery_rate
 
         # if keys[pg.K_LEFT]:
         #     self.angle -= PLAYER_ROT_SPEED * self.game.delta_time
