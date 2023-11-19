@@ -11,71 +11,63 @@ class Player:
         self.angle = PLAYER_ANGLE
         self.sprint_speed = PLAYER_SPEED * 2  # Sprint speed is twice the normal speed
         self.is_sprinting = False
-        self.stamina = 1000  # Maximum stamina
+        self.stamina = 100  # Maximum stamina
         self.stamina_depletion_rate = 1  # Stamina depletion rate per frame
         self.stamina_recovery_rate = 0.5  # Stamina recovery rate per frame
 
         pg.mouse.set_visible(False)  # Hide the mouse cursor
         pg.event.set_grab(True)  # Keep the mouse inside the game window
 
-
     def movement(self):
-        self.is_moving = False #Reset movement status
+        self.is_moving = False
 
-        speed = self.sprint_speed if self.is_sprinting else PLAYER_SPEED
+        # Basic speed setup
+        speed = PLAYER_SPEED
+        keys = pg.key.get_pressed()
+
+        # Check for sprinting
+        self.is_sprinting = keys[pg.K_LSHIFT] and self.stamina > 0
+        if self.is_sprinting:
+            speed = self.sprint_speed
+
+        # Apply delta time
         speed *= self.game.delta_time
-        dx = speed * math.cos(self.angle)
-        dy = speed * math.sin(self.angle)
 
+        # Movement calculations
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
         dx, dy = 0, 0
-        speed = PLAYER_SPEED * self.game.delta_time
-        speed_sin = speed * sin_a
-        speed_cos = speed * cos_a
-
-        keys = pg.key.get_pressed()
-        self.is_sprinting = (keys[pg.K_LSHIFT] or keys[pg.K_RSHIFT])
-        if self.is_sprinting:
-            speed = self.sprint_speed if self.is_sprinting else PLAYER_SPEED
-            speed *= self.game.delta_time
-            dx = speed * math.cos(self.angle)
-            dy = speed * math.sin(self.angle)
-
-        if keys[pg.K_w] or keys[pg.K_s] or keys[pg.K_a] or keys[pg.K_d]:
-            self.is_moving = True  # Set to True if any movement key is pressed
 
         if keys[pg.K_w]:
-            dx += speed_cos
-            dy += speed_sin
+            dx += speed * cos_a
+            dy += speed * sin_a
         if keys[pg.K_s]:
-            dx += -speed_cos
-            dy += -speed_sin
-        if keys[pg.K_a]:
-            dx += speed_sin
-            dy += -speed_cos
+            dx -= speed * cos_a
+            dy -= speed * sin_a
         if keys[pg.K_d]:
-            dx += -speed_sin
-            dy += speed_cos
+            dx -= speed * sin_a
+            dy += speed * cos_a
+        if keys[pg.K_a]:
+            dx += speed * sin_a
+            dy -= speed * cos_a
 
-        #self.x += dx
-        #self.y += dy
-        self.check_wall_collision(dx, dy)
+        # Set moving status
+        if dx != 0 or dy != 0:
+            self.is_moving = True
 
+        # Update stamina
         if self.is_sprinting:
             self.stamina -= self.stamina_depletion_rate
-            if self.stamina < 0:
-                self.stamina = 0
-        elif not self.is_sprinting and self.stamina < 100:
+            self.stamina = max(0, self.stamina)  # Prevent negative stamina
+        elif self.stamina < 100:
             self.stamina += self.stamina_recovery_rate
+            self.stamina = min(100, self.stamina)  # Cap stamina at 100
 
-        # if keys[pg.K_LEFT]:
-        #     self.angle -= PLAYER_ROT_SPEED * self.game.delta_time
-        # if keys[pg.K_RIGHT]:
-        #     self.angle += PLAYER_ROT_SPEED * self.game.delta_time
-        # Add mouse controls for rotation
+        # Collision and position update
+        self.check_wall_collision(dx, dy)
 
-        self.angle %= math.tau
+
+
 
 
     def check_events(self):

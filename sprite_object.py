@@ -18,6 +18,7 @@ class SpriteObject:
         self.sprite_half_width = 0
         self.SPRITE_SCALE = scale
         self.SPRITE_HEIGHT_SHIFT = shift
+        self.rect = self.image.get_rect(topleft=pos)
 
     def get_sprite_projection(self):
         proj = SCREEN_DIST / self.norm_dist * self.SPRITE_SCALE
@@ -51,6 +52,16 @@ class SpriteObject:
 
     def update(self):
         self.get_sprite()
+        self.rect.x, self.rect.y = self.x, self.y
+
+    def check_collisions(self):
+        for sprite in self.all_sprites:  # Assuming you have a list of all sprites
+            if self.player.rect.colliderect(sprite.rect):
+                self.handle_collision(sprite)
+
+    def handle_collision(self, sprite):
+        # Handle the collision (e.g., stop movement, reduce health, etc.)
+        print(f"Collided with {sprite}")
 
 class AnimatedSprite(SpriteObject):
     def __init__(self, game, path='GameForIA/resources/sprites/animated_sprites/grandfather_cock/0.png',

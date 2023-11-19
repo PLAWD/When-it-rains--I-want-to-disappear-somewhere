@@ -32,7 +32,7 @@ class ObjectHandler:
         add_sprite(AnimatedSprite(game, pos=(7.5, 5.5)))
         add_sprite(AnimatedSprite(game, pos=(14.5, 1.5)))
         add_sprite(AnimatedSprite(game, pos=(14.5, 4.5)))
-        add_sprite(AnimatedSprite(game, path=self.anim_sprite_path + 'grandfather_cock/0.png', pos=(14.5, 5.5)))
+        add_sprite(AnimatedSprite(game, path=self.static_sprite_path + 'longboi/longboi.png', pos=(14.5, 5.5)))
         add_sprite(AnimatedSprite(game, path=self.anim_sprite_path + 'grandfather_cock/0.png', pos=(14.5, 7.5)))
         add_sprite(AnimatedSprite(game, path=self.anim_sprite_path + 'grandfather_cock/0.png', pos=(12.5, 7.5)))
         add_sprite(AnimatedSprite(game, path=self.anim_sprite_path + 'grandfather_cock/0.png', pos=(9.5, 7.5)))

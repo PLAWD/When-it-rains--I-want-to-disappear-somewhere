@@ -7,8 +7,8 @@ class ObjectRenderer:
         self.game = game
         self.screen = game.screen
         self.wall_textures = self.load_wall_textures()
-        self.ceiling_image = self.get_texture('GameForIA/resources/textures/sky.png', (WIDTH, HALF_HEIGHT))
-        self.floor_image = self.get_texture('GameForIA/resources/textures/sky.png', (WIDTH, HALF_HEIGHT)) # Load floor texture
+        self.ceiling_image = self.get_texture('GameForIA/resources/textures/bubong.png', (WIDTH, HALF_HEIGHT))
+        self.floor_image = self.get_texture('GameForIA/resources/textures/lapag.png', (WIDTH, HALF_HEIGHT)) # Load floor texture
         self.ceiling_offset = 0
 
     def draw(self):

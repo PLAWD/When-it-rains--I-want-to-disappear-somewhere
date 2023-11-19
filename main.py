@@ -19,6 +19,25 @@ class Game:
         self.delta_time = 1
         self.new_game()
 
+        # Stamina bar properties
+        self.stamina_bar_width = 200
+        self.stamina_bar_height = 20
+        self.stamina_bar_position = (50, 550)  # Example position, adjust as needed
+        self.stamina_color = (0, 255, 0)  # Green color
+        self.stamina_bg_color = (255, 0, 0)  # Red color
+
+    def draw_stamina_bar(self, current_stamina):
+        # Draw the background of the stamina bar
+        pg.draw.rect(self.screen, self.stamina_bg_color,
+                         (*self.stamina_bar_position, self.stamina_bar_width, self.stamina_bar_height))
+
+        # Calculate the width of the foreground based on current stamina
+        foreground_width = (current_stamina / 100) * self.stamina_bar_width  # Assuming max stamina is 100
+
+        # Draw the foreground of the stamina bar
+        pg.draw.rect(self.screen, self.stamina_color,
+                         (*self.stamina_bar_position, foreground_width, self.stamina_bar_height))
+
     def new_game(self):
         self.map = Map(self)
         self.player = Player(self)
@@ -53,6 +72,9 @@ class Game:
             self.check_events()
             self.update()
             self.draw()
+            self.draw_stamina_bar(self.player.stamina)  # Pass the player's current stamina
+            pg.display.flip()
+            self.clock.tick(60)  # Assuming you have a clock for FPS control
 
 
 if __name__ == '__main__':
