@@ -20,6 +20,8 @@ class SpriteObject:
         self.SPRITE_HEIGHT_SHIFT = shift
         self.rect = self.image.get_rect(topleft=pos)
 
+
+
     def get_sprite_projection(self):
         proj = SCREEN_DIST / self.norm_dist * self.SPRITE_SCALE
         proj_width, proj_height = proj * self.IMAGE_RATIO, proj

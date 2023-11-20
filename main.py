@@ -20,10 +20,10 @@ class Game:
         self.new_game()
 
         # Stamina bar properties
-        self.stamina_bar_width = 200
+        self.stamina_bar_width = 1600
         self.stamina_bar_height = 20
-        self.stamina_bar_position = (50, 550)  # Example position, adjust as needed
-        self.stamina_color = (0, 255, 0)  # Green color
+        self.stamina_bar_position = (0, 0)  # Example position, adjust as needed
+        self.stamina_color = (41, 226, 255)  # Green color
         self.stamina_bg_color = (255, 0, 0)  # Red color
 
     def draw_stamina_bar(self, current_stamina):
