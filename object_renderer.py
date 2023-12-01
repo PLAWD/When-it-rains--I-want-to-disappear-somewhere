@@ -7,8 +7,8 @@ class ObjectRenderer:
         self.game = game
         self.screen = game.screen
         self.wall_textures = self.load_wall_textures()
-        self.ceiling_image = self.get_texture('GameForIA/resources/textures/bubong.png', (WIDTH, HALF_HEIGHT))
-        self.floor_image = self.get_texture('GameForIA/resources/textures/boolapag.png', (WIDTH, HALF_HEIGHT)) # Load floor texture
+        self.ceiling_image = self.get_texture('resources/textures/bubong.png', (WIDTH, HALF_HEIGHT))
+        self.floor_image = self.get_texture('resources/textures/boolapag.png', (WIDTH, HALF_HEIGHT)) # Load floor texture
         self.ceiling_offset = 0
 
     def draw(self):
@@ -34,10 +34,10 @@ class ObjectRenderer:
 
     def load_wall_textures(self):
         return {
-            1: self.get_texture('GameForIA/resources/textures/1.png'),
-            2: self.get_texture('GameForIA/resources/textures/2.png'),
-            3: self.get_texture('GameForIA/resources/textures/3.png'),
-            4: self.get_texture('GameForIA/resources/textures/4.png'),
-            5: self.get_texture('GameForIA/resources/textures/5.png'),
-            6: self.get_texture('GameForIA/resources/textures/5.png'),
+            1: self.get_texture('resources/textures/1.png'), #WALL TEXTURE
+            2: self.get_texture('resources/textures/2.png'),
+            3: self.get_texture('resources/textures/3.png'),
+            4: self.get_texture('resources/textures/4.png'),
+            5: self.get_texture('resources/textures/5.png'),
+            6: self.get_texture('resources/textures/5.png'),
         }
