@@ -11,7 +11,7 @@ class Player:
         self.angle = PLAYER_ANGLE
         self.sprint_speed = PLAYER_SPEED * 2  # Sprint speed is twice the normal speed
         self.is_sprinting = False
-        self.stamina = 500  # Maximum stamina
+        self.stamina = 200  # Maximum stamina
         self.stamina_depletion_rate = 1  # Stamina depletion rate per frame
         self.stamina_recovery_rate = 0.5  # Stamina recovery rate per frame
 
